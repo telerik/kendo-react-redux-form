@@ -37,11 +37,11 @@ class GridContainer extends React.Component {
                     style={{ maxHeight: "600px" }}
                     data={this.props.products}
                     rowRender={(row, dataItem) => dataItem["ProductID"] === this.props.selectedRow
-                        ? React.cloneElement(row,
-                            ...row.props,
-                            {
-                                style: { ...row.props.style, backgroundColor: "#ff6b58", color: "white" }
-                            })
+                        ? React.cloneElement(
+                            row,
+                            { ...row.props, style: {backgroundColor: "#ff6b58", color: "white" } },
+                            row.props.children
+                            )
                         : row
                     }
                 >
