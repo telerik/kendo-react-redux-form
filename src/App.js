@@ -48,8 +48,8 @@ class App extends Component {
   render() {
     return (
       <div className="App row m-2">
-        <GridContainer products={data} changeSelected={this.changeSelected} productDeleted={this.productDeleted} addProduct={this.addProduct} />
         <ReduxProductsForm onSubmit={this.submit} />
+        <GridContainer products={data} changeSelected={this.changeSelected} productDeleted={this.productDeleted} addProduct={this.addProduct} />
       </div>
     );
   }
