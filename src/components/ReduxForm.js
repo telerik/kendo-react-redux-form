@@ -1,105 +1,111 @@
 import React from 'react'
-import { Field, reduxForm } from 'redux-form'
+import { Field, reduxForm, FieldArray } from 'redux-form';
 import { connect } from 'react-redux';
-import { Input, NumericTextBox, Switch } from '@progress/kendo-react-inputs'
-import { DatePicker } from '@progress/kendo-react-dateinputs'
-import { DropDownList } from '@progress/kendo-react-dropdowns';
 import { Button } from '@progress/kendo-react-buttons';
+import FormGrid from './FormGrid';
+import products from './../data/products.json';
+import {
+    KendoInput,
+    KendoNumericTextBox,
+    KendoDatePicker,
+} from './Editors';
+import { required, minValue } from './validations';
 
-const required = value => value ? undefined : 'Required*';
-
-const minValue = min => value =>
-  value && value < min ? `Must be at least ${min}` : undefined;
-const minValue0 = minValue(0);
-const minValue1 = minValue(1);
-
-const kendoHOC = (type, {input: {value, onChange, onBlur}, meta, label, ...rest}) => {
-    const Type = type;
-
-    return <label className="k-form-field">
-        <span>{label}</span>
-        <Type
-            value={value}
-            onChange={(event) => onChange(event.value)}
-            onBlur={(event) => onBlur(event.value)}
-            {...rest}
-        />
-        {meta.error && meta.touched && <span className="k-required">{meta.error}</span>}
-    </label>;
-};
-
-const KendoInput = (options) => (kendoHOC(Input, options))
-const KendoNumericTextBox = (options) => (kendoHOC(NumericTextBox, options))
-const KendoDatePicker = (options) => (kendoHOC(DatePicker, options))
-const KendoDropDown = (options) => (kendoHOC(DropDownList, options))
-const KendoSwitch = (options) => (kendoHOC(Switch, options))
+const minValueZero = minValue(0);
 
 let ReduxProductsForm = props => {
-  const { handleSubmit, isNew } = props
+    const { handleSubmit, reset } = props
 
-  return (
-    <div className="col-md-4 col-sm-12 col-xs-12">
-      <div className="header">
-        <h5>Product</h5>
-      </div>
-      <form className="k-form" >
-        <fieldset>
-          <Field
-            name="ProductID"
-            component={KendoInput}
-            type="number"
-            label={"ProductID"}
-            disabled={true}
-          />
-          <Field
-            name="ProductName"
-            component={KendoInput}
-            type="text"
-            label={"Product Name"}
-            validate={[required]} />
-          <Field
-            name="UnitPrice"
-            component={KendoNumericTextBox}
-            type="number"
-            label={"Unit Price"}
-            validate={[required, minValue1]}
-          />
-          <Field
-            name="UnitsInStock"
-            component={KendoNumericTextBox}
-            type="number"
-            label={"Units In Stock"}
-            validate={[required, minValue0]}
-          />
-          <div className="text-right">
-            <Button
-              type="submit"
-              onClick={handleSubmit}
-              primary={true}
-              look={isNew ? 'outline'  : null}
-            >
-              {isNew
-                ? "Add new product"
-                : "Update"
-              }
+    return (<div className="col-md-12 col-sm-12 col-xs-12">
+        <div className="header">
+            <h5>Order</h5>
+        </div>
+        <form className="k-form" >
+            <fieldset>
+                <Field
+                    name="OrderID"
+                    label={"Order ID"}
+                    component={KendoInput}
+                    disabled={true}
+                />
+                <Field
+                    name="CustomerID"
+                    label={"Customer ID"}
+                    component={KendoInput}
+                    disabled={true}
+                />
+                <Field
+                    name="OrderDate"
+                    label={"Order Date"}
+                    component={KendoDatePicker}
+                    validate={[required]}
+                />
+                <Field
+                    name="Freight"
+                    label={"Freight"}
+                    component={KendoNumericTextBox}
+                    validate={[required, minValueZero]}
+                />
+                <Field
+                    name="ShipName"
+                    label={"Ship Name"}
+                    component={KendoInput}
+                    validate={[required]}
+                />
+                <h6>Order Products</h6>
+                <FieldArray
+                    name={'Details'}
+                    component={FormGrid}
+                    idField={'ProductID'}
+                    editField={'isInEdit'}
+                    defaultValue={{
+                        Quantity: 0,
+                        Discount: 0
+                    }}
+                    columns={[
+                        {
+                            field: 'ProductID',
+                            title: 'Product',
+                            editable: true,
+                            editorType: 'dropdownlist',
+                            editorOptions: {
+                                data: products,
+                                textField: 'ProductName',
+                                valueField: 'ProductID',
+                                defaultItem: { ProductName: 'Select Product ...', ProductID: null }
+                            }
+                        }, {
+                            field: 'Quantity',
+                            title: 'Quantity',
+                            editable: true
+                        }, {
+                            field: 'Discount',
+                            title: 'Discount',
+                            editable: true,
+                            editorType: 'numeric'
+                        }
+                    ]}
+                />
+                <div className="text-right">
+                    <Button type="submit" onClick={handleSubmit} primary={true}>
+                        Submit
             </Button>
-          </div>
-        </fieldset>
-      </form>
-    </div>
-  )
+                    <Button onClick={reset} >
+                        Reset
+            </Button>
+                </div>
+            </fieldset>
+        </form>
+    </div>);
 }
 
 ReduxProductsForm = reduxForm({
-  form: 'products'
+    form: 'order'
 })(ReduxProductsForm)
 
-ReduxProductsForm = connect(
-  state => ({
-    initialValues: {UnitPrice: 0, UnitsInStock: 0},
-    isNew: state.selectionReducer.isNew
-  })
-
+ReduxProductsForm = connect((state, initialProps) => ({
+    initialValues: initialProps.initialFormValues ? initialProps.initialFormValues : {}
+})
 )(ReduxProductsForm);
 
 export default ReduxProductsForm
