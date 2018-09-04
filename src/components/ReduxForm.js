@@ -64,15 +64,15 @@ let ReduxProductsForm = props => {
                     }}
                     columns={[
                         {
-                            field: 'ProductID',
+                            field: 'Product',
                             title: 'Product',
                             editable: true,
                             editorType: 'dropdownlist',
                             editorOptions: {
                                 data: products,
                                 textField: 'ProductName',
-                                valueField: 'ProductID',
-                                defaultItem: { ProductName: 'Select Product ...', ProductID: null }
+                                dataItemKey: 'ProductID',
+                                style: { width: '260px' }
                             }
                         }, {
                             field: 'Quantity',

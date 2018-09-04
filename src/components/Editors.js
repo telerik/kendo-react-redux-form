@@ -7,7 +7,7 @@ import { DropDownList } from '@progress/kendo-react-dropdowns';
 const kendoHOC = (type, { input: { onChange, onBlur, value, ...restInput }, meta, label, ...rest }) => {
     const Type = type;
 
-    return <label className="k-form-field">
+    return <span className="k-form-field">
         <span>{label}</span>
         <Type
             {...restInput}
@@ -20,7 +20,7 @@ const kendoHOC = (type, { input: { onChange, onBlur, value, ...restInput }, meta
             onBlur={(event) => onBlur(event.value)}
         />
         {meta.error && meta.touched && <span className="k-required">{meta.error}</span>}
-    </label>;
+    </span>;
 };
 
 const KendoInput = (options) => (kendoHOC(Input, options));

@@ -17,12 +17,18 @@
     },
     "Details" : [
         {
-            "ProductID" : 33,
+            "Product" : {
+                "ProductID": 33,
+                "ProductName": "Geitost"
+            },
             "Quantity" : 24,
             "Discount" : 0
         },
         {
-            "ProductID" : 12,
+            "Product" : {
+                "ProductID": 35,
+                "ProductName": "Steeleye Stout"
+            },
             "Quantity" : 12,
             "Discount" : 0.05
         }
