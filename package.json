@@ -8,6 +8,8 @@
     "@progress/kendo-react-buttons": "^2.0.0",
     "@progress/kendo-react-dateinputs": "^2.0.0",
     "@progress/kendo-react-dropdowns": "^2.0.0",
+    "@progress/kendo-react-animation": "^2.0.0",
+    "@progress/kendo-react-popup": "^2.0.0",
     "@progress/kendo-react-grid": "^2.0.0",
     "@progress/kendo-react-inputs": "^2.0.0",
     "@progress/kendo-react-intl": "^2.0.0",
