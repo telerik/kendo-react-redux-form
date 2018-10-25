@@ -25,9 +25,6 @@ label>input.hidden {
 .k-grid {
   margin-bottom: 20px;
 }
-.k-form-field span:nth-of-type(2) {
-  color:red;
-}
 .k-form fieldset {
   border-top-width: 0;
 }
